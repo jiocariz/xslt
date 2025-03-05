@@ -17,10 +17,13 @@
                     <a href="atracciones.xml">Atracciones</a>
                     <a href="eventos.xml">Eventos</a>
                 </header>
-                
+                <xsl:variable name="curYear" select="2024"/>
                 <main>
-                    <h1>Eventos del 2024</h1>
-                    <xsl:apply-templates select="eventos/evento[substring(fechaHora,1,4)=2024]"/>
+                    <h1>Eventos del <xsl:value-of select="$curYear"/></h1>
+                    
+                    <xsl:apply-templates select="eventos/evento[substring(fechaHora,1,4)=$curYear]">
+                        <xsl:sort select="fechaHora" data-type="text" order="descending"/>
+                    </xsl:apply-templates>
                    
                 </main>
 
@@ -32,7 +35,6 @@
     </xsl:template>    
 
     <xsl:template match="evento">
-        <xsl:variable name="anyo" select="substring(fechaHora,1,4)"/>
         <xsl:variable name="numComent" select="count(comentarios/comentario)"/>
         <article class="eventos">
             <h4><xsl:value-of select="descripcion"/> - <xsl:value-of select="$numComent"/> Comentarios</h4>
